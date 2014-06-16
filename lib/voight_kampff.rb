@@ -6,6 +6,15 @@ module VoightKampff
 
   class << self
 
+    def set_config(key, value)
+      @@config ||= {}
+      @@config[key] = value
+    end
+
+    def get_config(key)
+      @@config[key]
+    end
+
     def root
       require 'pathname'
       Pathname.new File.expand_path '..', File.dirname(__FILE__)

@@ -72,11 +72,15 @@ module VoightKampff
         base_paths = []
         base_paths << Rails.root if defined? Rails
         base_paths << VoightKampff.root
-        rel_path = ['config', 'user_agents.yml']
 
-        base_paths.any? do |base_path|
-          if File.exists? base_path.join(*rel_path)
-            @@agents = YAML.load(File.open(base_path.join(*rel_path), 'r'))
+        user_agent_files = VoightKampff.get_config(:user_agent_files) || ['user_agents.yml']
+
+        user_agent_files.each do |filename|
+          rel_path = ['config', filename]
+          base_paths.any? do |base_path|
+            if File.exists? base_path.join(*rel_path)
+              @@agents += YAML.load(File.open(base_path.join(*rel_path), 'r'))
+            end
           end
         end
 
